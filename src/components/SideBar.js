@@ -1,12 +1,17 @@
 import React, { Component } from "react";
+import Modal from "./Modal";
 
 export default class SideBar extends Component {
   state = {
-    reservation: {}
+    reservation: {},
+    messageOn: false
   };
   handleSave = () => {
     let reservation = { ...this.props.tripDetails };
     localStorage.setItem("reservation", JSON.stringify(reservation));
+    this.setState({
+      messageOn: true
+    });
   };
 
   handleLoad = () => {
@@ -18,6 +23,12 @@ export default class SideBar extends Component {
   componentDidMount() {
     localStorage.length && this.handleLoad();
   }
+
+  closeMessage = () => {
+    this.setState({
+      messageOn: false
+    });
+  };
 
   render() {
     const {
@@ -40,6 +51,11 @@ export default class SideBar extends Component {
 
     return (
       <div className="col-md-4 sidebar">
+        {this.state.messageOn && (
+          <Modal closeModal={this.closeMessage}>
+            <h1>Reservation saved</h1>
+          </Modal>
+        )}
         <div className="card">
           <h2>Reservation Summary</h2>
           <div className="clearfix">
