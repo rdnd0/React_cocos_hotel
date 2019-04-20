@@ -5,15 +5,22 @@ import Modal from "./Modal";
 export default class Roomlist extends Component {
   state = {
     discount: 0,
-    messageOn: false
+    messageOn: false,
+    incorrectPromo: undefined
   };
   componentDidMount() {
     let path = window.location.pathname;
-    let regex = /promo_code=\d{2}$/;
+    let regex = /promo_code=[1-5][05]$/;
     if (path && regex.test(path)) {
       let discount = path.replace(/\/promo_code=/, "");
       this.setState({
         discount,
+        messageOn: true,
+        incorrectPromo: false
+      });
+    } else if (path) {
+      this.setState({
+        incorrectPromo: true,
         messageOn: true
       });
     }
@@ -30,11 +37,17 @@ export default class Roomlist extends Component {
   render() {
     return (
       <div className="col-md-8 main">
-        {this.state.messageOn && (
-          <Modal closeModal={this.closeMessage} message={"Configure trip!"}>
-            <h2>{this.state.discount}% discount applied</h2>
-          </Modal>
-        )}
+        {this.state.incorrectPromo
+          ? this.state.messageOn && (
+              <Modal closeModal={this.closeMessage} message={"Back"}>
+                <h2>Incorrect promo code</h2>
+              </Modal>
+            )
+          : this.state.messageOn && (
+              <Modal closeModal={this.closeMessage} message={"Configure trip!"}>
+                <h2>{this.state.discount}% discount applied</h2>
+              </Modal>
+            )}
         <Room
           name="Mini Dreamy Room"
           desc="Generous and comfortable these modern furnished rooms offer two

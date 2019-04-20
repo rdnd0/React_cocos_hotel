@@ -7,7 +7,7 @@ export default class Room extends Component {
   };
   componentDidMount() {
     let path = window.location.pathname;
-    let regex = /promo_code=\d{2}$/;
+    let regex = /promo_code=[1-5][05]$/;
     if (path && regex.test(path)) {
       let discount = path.replace(/\/promo_code=/, "");
       this.setState({
