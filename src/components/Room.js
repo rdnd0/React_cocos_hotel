@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 export default class Room extends Component {
   state = {
-    price: this.props.price
+    price: this.props.price,
+    messageOn: false
   };
   componentDidMount() {
     let path = window.location.pathname;
@@ -14,6 +15,7 @@ export default class Room extends Component {
       });
     }
   }
+
   render() {
     const { name, desc, size, beds, people } = this.props;
     const { price } = this.state;

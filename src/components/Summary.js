@@ -16,7 +16,6 @@ export default class Summary extends Component {
   componentWillMount() {
     let data = JSON.parse(localStorage.getItem("reservation"));
     if (data) {
-      console.log("there is data in local storage");
       const { roomName, roomPrice, checkin, checkout, adults, children } = data;
       this.setState({
         roomName,
@@ -31,7 +30,6 @@ export default class Summary extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { checkin, checkout, adults, children } = this.props.tripDetails;
-    console.log("check in in summary", this.props);
     prevProps !== this.props &&
       this.setState({
         checkin,

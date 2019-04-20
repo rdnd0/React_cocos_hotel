@@ -4,14 +4,24 @@ import Modal from "./Modal";
 export default class SideBar extends Component {
   state = {
     reservation: {},
-    messageOn: false
+    messageOn: false,
+    reservationComplete: false
   };
   handleSave = () => {
     let reservation = { ...this.props.tripDetails };
-    localStorage.setItem("reservation", JSON.stringify(reservation));
-    this.setState({
-      messageOn: true
-    });
+    const { roomName, roomPrice, adults, checkin, checkout } = reservation;
+    if (roomName && roomPrice && adults && checkin && checkout) {
+      this.setState({
+        messageOn: true,
+        reservationComplete: true
+      });
+      localStorage.setItem("reservation", JSON.stringify(reservation));
+    } else {
+      this.setState({
+        messageOn: true,
+        reservationComplete: false
+      });
+    }
   };
 
   handleLoad = () => {
@@ -51,17 +61,26 @@ export default class SideBar extends Component {
 
     return (
       <div className="col-md-4 sidebar">
-        {this.state.messageOn && (
-          <Modal closeModal={this.closeMessage}>
-            <h1>Reservation saved</h1>
-          </Modal>
-        )}
+        {this.state.reservationComplete
+          ? this.state.messageOn && (
+              <Modal
+                closeModal={this.closeMessage}
+                message={"Proceed to checkout"}
+              >
+                <h2>Your reservation is saved!</h2>
+              </Modal>
+            )
+          : this.state.messageOn && (
+              <Modal closeModal={this.closeMessage} message={"Back"}>
+                <h2>Few trip details are missing</h2>
+              </Modal>
+            )}
         <div className="card">
           <h2>Reservation Summary</h2>
           <div className="clearfix">
             <h5 className="pull-left">
               {name || roomName || (
-                <span style={{ color: "red" }}>please select a room</span>
+                <span style={{ color: "red" }}>Please select a room</span>
               )}
             </h5>
             <div className="form-group pull-right">

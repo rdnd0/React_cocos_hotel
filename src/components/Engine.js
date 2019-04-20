@@ -1,11 +1,14 @@
 import React, { Component } from "react";
+import Modal from "./Modal";
 
 export default class Engine extends Component {
   state = {
     checkin: "",
     checkout: "",
     adults: 0,
-    children: 0
+    children: 0,
+    messageOn: false,
+    detailsComplete: false
   };
 
   componentWillMount() {
@@ -45,13 +48,46 @@ export default class Engine extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.handleTrip(this.state);
+    const { checkin, checkout, adults } = this.state;
+    if (checkin && checkout && adults) {
+      this.props.handleTrip(this.state);
+      this.setState({
+        messageOn: true,
+        detailsComplete: true
+      });
+    } else {
+      this.setState({
+        messageOn: true,
+        detailsComplete: false
+      });
+    }
   };
+
+  closeMessage = () => {
+    this.setState({
+      messageOn: false
+    });
+  };
+
   render() {
     const { checkin, checkout, children, adults } = this.state;
 
     return (
       <div className="engine text-center">
+        {this.state.detailsComplete
+          ? this.state.messageOn && (
+              <Modal
+                closeModal={this.closeMessage}
+                message={"Let's choose a room"}
+              >
+                <h2>Trip configuration selected!</h2>
+              </Modal>
+            )
+          : this.state.messageOn && (
+              <Modal closeModal={this.closeMessage} message={"Back"}>
+                <h2>Please choose your details</h2>
+              </Modal>
+            )}
         <div className="engine-wrapper">
           <div className="container text-center">
             <form
@@ -68,6 +104,7 @@ export default class Engine extends Component {
                     className="form-control"
                     defaultValue={checkin}
                     onChange={this.handleInput}
+                    style={{ zIndex: "auto" }}
                   />
                   <div className="input-group-addon">
                     <span className="glyphicon glyphicon-calendar" />
@@ -84,6 +121,7 @@ export default class Engine extends Component {
                     className="form-control"
                     defaultValue={checkout}
                     onChange={this.handleInput}
+                    style={{ zIndex: "auto" }}
                   />
                   <div className="input-group-addon">
                     <span className="glyphicon glyphicon-calendar" />
