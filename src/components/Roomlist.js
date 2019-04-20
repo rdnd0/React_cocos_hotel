@@ -18,7 +18,8 @@ export default class Roomlist extends Component {
         messageOn: true,
         incorrectPromo: false
       });
-    } else if (path) {
+    } else if (path !== "/") {
+      console.log(path);
       this.setState({
         incorrectPromo: true,
         messageOn: true

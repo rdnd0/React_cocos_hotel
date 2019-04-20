@@ -28,7 +28,7 @@ export default class Room extends Component {
         }}
       >
         <div className="room-image">
-          <img src="images/cocos/room_1.png" width="100%" />
+          <img src="images/cocos/room_1.png" width="100%" alt="room" />
         </div>
 
         <div className="room-content">
@@ -40,7 +40,11 @@ export default class Room extends Component {
           <div className="room-info">
             <div className="item">
               <span className="inline-block">
-                <img src="images/icons/double-bed.svg" width="40" />
+                <img
+                  src="images/icons/double-bed.svg"
+                  width="40"
+                  alt="bed-icon"
+                />
               </span>
               <div>Beds: {beds}</div>
             </div>
